@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+// This is where you select the group
+group 'org.example'
+// And this is the generated jar version!
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+// This is where you add your "dependencies"
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Below method creates a "far jar" with manifest attribute
+// Do remember to change Main-Class to your main method! (Reference to this project)
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        // set as your class entrypoint
+        attributes 'Main-Class': 'com.spiritlight.howtojava.Main'
+    }
+}
